@@ -6,7 +6,7 @@ export async function bundle(options: BundlerOptions) {
     "deno:///bundle.js"
   ];
   const data = JSON.stringify(tree);
-  const beginning = `;window["ASSETS_FS"]={"${options.key}": ${data}};`;
+  const beginning = `;window["ASSETS_FS"]=Object.freeze({"${options.key}":${data}});`;
   const finalContent = beginning + content;
   if (options.output) {
     Deno.writeTextFileSync(options.output, finalContent);
