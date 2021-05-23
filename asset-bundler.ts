@@ -1,7 +1,7 @@
-import { BundlerOptions, getTree } from "./common.ts";
+import { BundleOptions, getStore } from "./common.ts";
 
-export async function bundle(options: BundlerOptions) {
-  const tree = getTree(options);
+export async function bundle(options: BundleOptions) {
+  const tree = getStore(options);
   const content = (await Deno.emit(options.entry, { bundle: "module" })).files[
     "deno:///bundle.js"
   ];

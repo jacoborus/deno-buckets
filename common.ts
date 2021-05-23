@@ -1,29 +1,92 @@
 import { walkSync } from "https://deno.land/std/fs/mod.ts";
-import { resolve, basename } from "https://deno.land/std/path/mod.ts";
+import { resolve } from "https://deno.land/std/path/mod.ts";
 
-export interface BundlerOptions {
-  entry: string;
-  folders: string[];
-  output?: string;
+export interface BundleOptions {
   key: string;
+  entry: string;
+  output?: string;
+  buckets: (string | BucketOptions)[];
 }
-export type FileTree = Record<string, string>;
 
-export function getTree(options: BundlerOptions) {
-  const tree = {} as FileTree;
-  options.folders.forEach((folderName) => {
-    const folderPath = resolve(folderName);
-    for (const e of walkSync(folderPath)) {
-      if (e.isFile) {
-        tree[getPropPath(folderPath, e.path)] = Deno.readTextFileSync(e.path);
-      }
-    }
+interface BucketOptions {
+  name: string;
+  folder: string;
+  isText?: boolean;
+  maxDepth?: number;
+  exts?: string[];
+  match?: RegExp[];
+  skip?: RegExp[];
+}
+
+interface BundleConf {
+  key: string;
+  entry: string;
+  buckets: BucketConf[];
+  output: string;
+}
+
+interface BucketConf extends BucketOptions {
+  path: string;
+}
+
+type BucketData = Record<string, string>;
+export type Store = Record<string, BucketData>;
+
+const rootPath = Deno.mainModule.replace(/[^\/]+$/, "").slice(7);
+
+export function getStore(options: BundleOptions): Store {
+  const conf = getBundleConf(options);
+  const store = {} as Store;
+  conf.buckets.forEach((bucketConf) => {
+    store[bucketConf.name] = getBucketData(bucketConf);
   });
-  return tree;
+  return store;
+}
+
+function getBundleConf(options: BundleOptions): BundleConf {
+  const conf = {
+    key: options.key,
+    entry: resolve(options.entry),
+    output: getOutput(options),
+    buckets: options.buckets.map((bucketOpts) => {
+      return getBucketConf(bucketOpts);
+    }),
+  };
+  return conf;
+}
+
+function getBucketData(conf: BucketConf): BucketData {
+  const bucket = {} as BucketData;
+  for (const e of walkSync(conf.path, { includeDirs: false })) {
+    const propName = getPropPath(conf.path, e.path);
+    bucket[propName] = Deno.readTextFileSync(e.path);
+  }
+  return bucket;
+}
+
+function getBucketConf(bucketOpts: string | BucketOptions): BucketConf {
+  if (typeof bucketOpts === "string") {
+    return bucketConfFromString(bucketOpts);
+  } else {
+    return Object.assign({}, bucketOpts, {
+      path: rootPath + bucketOpts.folder,
+    });
+  }
+}
+
+function bucketConfFromString(folder: string): BucketConf {
+  return {
+    path: rootPath + folder,
+    name: folder,
+    folder,
+  };
 }
 
 function getPropPath(folder: string, file: string) {
-  const base = basename(folder);
-  const len = folder.length - base.length;
+  const len = folder.length - file.length + 1;
   return file.slice(len);
+}
+
+function getOutput(options: BundleOptions): string {
+  return options.output || options.entry.replace(/\.[^/.]+$/, ".bundle.js");
 }
