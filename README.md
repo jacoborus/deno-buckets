@@ -1,4 +1,4 @@
-deno-assets
-===========
+deno-buckets 🦕🪣
+=================
 
-A virtual file system for the assets of your Deno app
+Asset bundler for [Deno](https://deno.land) apps
