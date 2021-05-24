@@ -1,8 +1,12 @@
 import { BundleOptions, getStore } from "./common.ts";
+import { resolve } from "https://deno.land/std/path/mod.ts";
+
+const rootPath = Deno.mainModule.replace(/[^\/]+$/, "").slice(7);
 
 export async function bundle(options: BundleOptions) {
   const tree = getStore(options);
-  const content = (await Deno.emit(options.entry, { bundle: "module" })).files[
+  const entryPath = resolve(rootPath, options.entry);
+  const content = (await Deno.emit(entryPath, { bundle: "module" })).files[
     "deno:///bundle.js"
   ];
   const data = JSON.stringify(tree);
