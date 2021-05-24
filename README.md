@@ -5,7 +5,7 @@ Asset bundler for [Deno](https://deno.land) apps
 
 ---
 
-:fire: **HEADS UP!** This is a work in progress, it's undocumented, Api may change and it's probably buggy. Use it at your own risk
+:fire: **HEADS UP!** This is a work in progress, it's undocumented, API may change and it's probably buggy. Use it at your own risk
 
 ---
 
@@ -22,14 +22,15 @@ export default {
       name: "mustaches",
       folder: "assets/mustaches/templates",
       exts: [".hbs"],
+      removeExts: true
     },
     {
       name: "data",
       folder: "countries",
-      exts: [".json"]
+      exts: [".txt"]
     }
   ],
-  output: "app.bundle.js",
+  output: "app.bundle.js"
 }
 ```
 
@@ -43,13 +44,13 @@ const buckets = loadBuckets(bucketsConf);
 console.log(buckets);
 // {
 //   mustaches: {
-//     "country-info.hbs": ".....",
-//     "other-info.hbs": ".....",
+//     "country-info": ".....",
+//     "other-info": ".....",
 //     ...
 //   },
 //   data: {
-//     "capitals.json": ".....",
-//     "population.json": ".....",
+//     "capitals.txt": ".....",
+//     "population.txt": ".....",
 //     ...
 //   }
 // }
@@ -68,7 +69,8 @@ bundle(conf);
 
 ## TODO
 
-- [ ] Custom decoding
+- [ ] Remove extensions
+- [ ] Custom decoders
 - [ ] Docs
 - [ ] Tests
 - [ ] Version
