@@ -34,12 +34,12 @@ export async function bundle(options: BundleOptions) {
     "deno:///bundle.js"
   ];
   const data = JSON.stringify(store);
-  const beginning = `;window["BUCKETS_FS"]=Object.freeze({"${options.key}":${data}});`;
+  const beginning = `;window["BUCKETS_FS"]=Object.freeze({"${options.key}":${data}});\n`;
   const finalContent = beginning + content;
   if (options.output) {
     Deno.writeTextFileSync(options.output, finalContent);
   } else {
-    console.log(finalContent);
+    await Deno.stdout.write(new TextEncoder().encode(finalContent));
   }
 }
 
