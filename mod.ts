@@ -26,6 +26,7 @@ declare global {
 }
 
 const rootPath = Deno.mainModule.replace(/[^\/]+$/, "").slice(7);
+const isCompiled = Deno.mainModule === "file://$deno$/bundle.js";
 
 export async function bundle(options: BundleOptions) {
   const store = getStore(options);
@@ -43,16 +44,13 @@ export async function bundle(options: BundleOptions) {
   }
 }
 
-const isCompiled = Deno.mainModule === "file://$deno$/bundle.js";
-const isDev = !isCompiled && !window.BUCKETS_FS;
-
 export function loadBuckets(options: BundleOptions): Store {
-  return isDev
+  return !isCompiled && !window.BUCKETS_FS?.[options.key]
     ? Object.freeze(getStore(options))
     : window.BUCKETS_FS[options.key];
 }
 
-export function getStore(options: BundleOptions): Store {
+function getStore(options: BundleOptions): Store {
   return Object.fromEntries(
     options.buckets.map((conf) => [conf.name, getBucketData(conf)])
   );
