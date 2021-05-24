@@ -1,4 +1,4 @@
-import { walkSync } from "https://deno.land/std/fs/mod.ts";
+import { walkSync, WalkOptions } from "https://deno.land/std/fs/mod.ts";
 import { resolve } from "https://deno.land/std/path/mod.ts";
 
 export interface BundleOptions {
@@ -57,11 +57,23 @@ function getBundleConf(options: BundleOptions): BundleConf {
 
 function getBucketData(conf: BucketConf): BucketData {
   const bucket = {} as BucketData;
-  for (const e of walkSync(conf.path, { includeDirs: false })) {
+  const walkConf = getWalkConf(conf);
+  for (const e of walkSync(conf.path, walkConf)) {
     const propName = getPropPath(conf.path, e.path);
     bucket[propName] = Deno.readTextFileSync(e.path);
   }
   return bucket;
+}
+
+function getWalkConf(bucketConf: BucketConf): WalkOptions {
+  const conf = {
+    includeDirs: false,
+  } as WalkOptions;
+  if ("maxDepth" in bucketConf) conf.maxDepth = bucketConf.maxDepth;
+  if ("exts" in bucketConf) conf.exts = bucketConf.exts;
+  if ("match" in bucketConf) conf.match = bucketConf.match;
+  if ("skip" in bucketConf) conf.skip = bucketConf.skip;
+  return conf;
 }
 
 function getBucketConf(bucketOpts: string | BucketOptions): BucketConf {
