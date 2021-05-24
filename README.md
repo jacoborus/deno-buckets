@@ -54,8 +54,8 @@ console.log(buckets);
 **bundler.ts:**
 
 ```typescript
-import conf from "./app-conf.ts";
-import { bundle } from "../mod.ts";
+import conf from "./buckets.ts";
+import { bundle } from "https://raw.githubusercontent.com/jacoborus/deno-buckets/main/mod.ts";
 
 bundle(conf);
 ```
