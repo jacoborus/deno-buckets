@@ -1,4 +1,4 @@
-import { walkSync, WalkOptions } from "https://deno.land/std/fs/mod.ts";
+import { WalkOptions, walkSync } from "https://deno.land/std/fs/mod.ts";
 import { resolve } from "https://deno.land/std/path/mod.ts";
 
 export interface BundleOptions {
@@ -35,7 +35,8 @@ export async function bundle(options: BundleOptions) {
     "deno:///bundle.js"
   ];
   const data = JSON.stringify(store);
-  const beginning = `;window["BUCKETS_FS"]=Object.freeze({"${options.key}":${data}});\n`;
+  const beginning =
+    `;window["BUCKETS_FS"]=Object.freeze({"${options.key}":${data}});\n`;
   const finalContent = beginning + content;
   if (options.output) {
     Deno.writeTextFileSync(options.output, finalContent);
@@ -52,7 +53,7 @@ export function loadBuckets(options: BundleOptions): Store {
 
 function getStore(options: BundleOptions): Store {
   return Object.fromEntries(
-    options.buckets.map((conf) => [conf.name, getBucketData(conf)])
+    options.buckets.map((conf) => [conf.name, getBucketData(conf)]),
   );
 }
 

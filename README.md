@@ -1,11 +1,11 @@
-deno-buckets 🦕🪣
-=================
+# deno-buckets 🦕🪣
 
 Asset bundler for [Deno](https://deno.land) apps
 
 ---
 
-:fire: **HEADS UP!** This is a work in progress, it's undocumented, API may change and it's probably buggy. Use it at your own risk
+:fire: **HEADS UP!** This is a work in progress, it's undocumented, API may
+change and it's probably buggy. Use it at your own risk
 
 ---
 
@@ -22,16 +22,16 @@ export default {
       name: "mustaches",
       folder: "assets/mustaches/templates",
       exts: [".hbs"],
-      removeExts: true
+      removeExts: true,
     },
     {
       name: "data",
       folder: "countries",
-      exts: [".txt"]
-    }
+      exts: [".txt"],
+    },
   ],
-  output: "app.bundle.js"
-}
+  output: "app.bundle.js",
+};
 ```
 
 **app.ts:**
@@ -55,8 +55,6 @@ console.log(buckets);
 //   }
 // }
 ```
-
-
 
 **bundler.ts:**
 
