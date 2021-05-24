@@ -3,6 +3,12 @@ deno-buckets 🦕🪣
 
 Asset bundler for [Deno](https://deno.land) apps
 
+---
+
+:fire: **HEADS UP!** This is a work in progress, it's undocumented, Api may change and it's probably buggy. Use it at your own risk
+
+---
+
 ## Example
 
 **buckets.ts:**
@@ -60,4 +66,10 @@ import { bundle } from "https://raw.githubusercontent.com/jacoborus/deno-buckets
 bundle(conf);
 ```
 
+## TODO
 
+- [ ] Custom decoding
+- [ ] Docs
+- [ ] Tests
+- [ ] Version
+- [ ] Release
