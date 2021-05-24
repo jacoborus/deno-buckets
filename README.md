@@ -13,14 +13,14 @@ export default {
   entry: "app.ts",
   buckets: [
     {
-      name: 'mustaches',
-      folder: 'assets/mustaches/templates',
-      exts: ['.hbs'],
+      name: "mustaches",
+      folder: "assets/mustaches/templates",
+      exts: [".hbs"],
     },
     {
-      name: 'data',
-      folder: 'countries/capitals',
-      exts: ['.json']
+      name: "data",
+      folder: "countries",
+      exts: [".json"]
     }
   ],
   output: "app.bundle.js",
@@ -35,6 +35,18 @@ import bucketsConf from "./buckets.ts";
 
 const buckets = loadBuckets(bucketsConf);
 console.log(buckets);
+// {
+//   mustaches: {
+//     "country-info.hbs": ".....",
+//     "other-info.hbs": ".....",
+//     ...
+//   },
+//   data: {
+//     "capitals.json": ".....",
+//     "population.json": ".....",
+//     ...
+//   }
+// }
 ```
 
 
