@@ -75,3 +75,5 @@ bundle(conf);
 - [ ] Tests
 - [ ] Version
 - [ ] Release
+- [ ] Publish to deno.land/x
+- [ ] Publish to nest.land
