@@ -29,7 +29,7 @@ interface BucketConf extends BucketOptions {
   path: string;
 }
 
-type BucketData = Record<string, string>;
+type BucketData = Record<string, string | Uint8Array>;
 export type Store = Record<string, BucketData>;
 
 const rootPath = Deno.mainModule.replace(/[^\/]+$/, "").slice(7);
@@ -60,7 +60,11 @@ function getBucketData(conf: BucketConf): BucketData {
   const walkConf = getWalkConf(conf);
   for (const e of walkSync(conf.path, walkConf)) {
     const propName = getPropPath(conf.path, e.path);
-    bucket[propName] = Deno.readTextFileSync(e.path);
+    if (conf.isText) {
+      bucket[propName] = Deno.readTextFileSync(e.path);
+    } else {
+      bucket[propName] = Deno.readFileSync(e.path);
+    }
   }
   return bucket;
 }
