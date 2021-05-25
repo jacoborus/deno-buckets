@@ -6,6 +6,7 @@ export default {
       name: "data",
       folder: "cities/data",
       exts: [".yml"],
+      trimExtensions: true,
     },
     {
       name: "templates",

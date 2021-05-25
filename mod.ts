@@ -15,6 +15,7 @@ export interface BucketOptions {
   exts?: string[];
   match?: RegExp[];
   skip?: RegExp[];
+  trimExtensions?: boolean;
 }
 
 export type Store = Record<string, Record<string, string>>;
@@ -35,8 +36,7 @@ export async function bundle(options: BundleOptions) {
     "deno:///bundle.js"
   ];
   const data = JSON.stringify(store);
-  const beginning =
-    `;window["BUCKETS_FS"]=Object.freeze({"${options.key}":${data}});\n`;
+  const beginning = `;window["BUCKETS_FS"]={"${options.key}":Object.freeze(${data})};\n`;
   const finalContent = beginning + content;
   if (options.output) {
     Deno.writeTextFileSync(options.output, finalContent);
@@ -53,7 +53,7 @@ export function loadBuckets(options: BundleOptions): Store {
 
 function getStore(options: BundleOptions): Store {
   return Object.fromEntries(
-    options.buckets.map((conf) => [conf.name, getBucketData(conf)]),
+    options.buckets.map((conf) => [conf.name, getBucketData(conf)])
   );
 }
 
@@ -63,7 +63,8 @@ function getBucketData(conf: BucketOptions): Record<string, string> {
   const folderPath = resolve(rootPath, conf.folder);
   for (const e of walkSync(folderPath, walkConf)) {
     const propName = getPropPath(folderPath, e.path);
-    bucket[propName] = Deno.readTextFileSync(e.path);
+    const finalPropName = removeExtension(propName, conf);
+    bucket[finalPropName] = Deno.readTextFileSync(e.path);
   }
   return bucket;
 }
@@ -82,4 +83,11 @@ function getWalkConf(bucketConf: BucketOptions): WalkOptions {
 function getPropPath(folder: string, file: string): string {
   const len = folder.length - file.length + 1;
   return file.slice(len);
+}
+
+function removeExtension(name: string, conf: BucketOptions): string {
+  if (!conf.trimExtensions || !conf.exts || !conf.exts.length) return name;
+  const extension = conf.exts.find((ext) => name.endsWith(ext)) as string;
+  const len = extension.length;
+  return name.slice(0, name.length - len);
 }

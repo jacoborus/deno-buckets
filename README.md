@@ -67,7 +67,7 @@ bundle(conf);
 
 ## TODO
 
-- [ ] Remove extensions
+- [x] Remove extensions
 - [ ] Custom decoders
 - [ ] Docs
 - [ ] Tests
