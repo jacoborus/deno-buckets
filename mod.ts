@@ -16,6 +16,7 @@ export interface BucketOptions {
   match?: RegExp[];
   skip?: RegExp[];
   trimExtensions?: boolean;
+  decoder?: (data: Uint8Array) => unknown;
 }
 
 export type Store = Record<string, Record<string, unknown>>;
@@ -58,14 +59,16 @@ function getStore(options: BundleOptions): Store {
   );
 }
 
-function getBucketData(conf: BucketOptions): Record<string, string> {
-  const bucket = {} as Record<string, string>;
+function getBucketData(conf: BucketOptions): Record<string, unknown> {
+  const bucket = {} as Record<string, unknown>;
   const walkConf = getWalkConf(conf);
   const folderPath = resolve(rootPath, conf.folder);
   for (const e of walkSync(folderPath, walkConf)) {
     const propName = getPropPath(folderPath, e.path);
     const finalPropName = removeExtension(propName, conf);
-    bucket[finalPropName] = Deno.readTextFileSync(e.path);
+    bucket[finalPropName] = conf.decoder
+      ? conf.decoder(Deno.readFileSync(e.path))
+      : Deno.readTextFileSync(e.path);
   }
   return bucket;
 }
