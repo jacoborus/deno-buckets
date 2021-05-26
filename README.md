@@ -31,7 +31,7 @@ all the assets. Both methods require the bundle options as unique parameter.
 - **match?**: _RegExp[]_: a list of regexes to filter in
 - **skip?**: _RegExp[]_: a list of regexes to filter out
 - **trimExtensions?** _boolean_: remove the extension from the file name
-- **decoder?** _function_: it uses TextDecoder by default
+- **decoder?** _fuction_: it uses TextDecoder by default
 
 Arguments marked with a question mark (?) are optional
 
