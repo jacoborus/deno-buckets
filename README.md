@@ -21,7 +21,7 @@ export default {
     {
       name: "mustaches",
       folder: "assets/mustaches/templates",
-      exts: [".hbs"],
+      exts: [".template"],
       trimExtensions: true,
     },
     {
@@ -71,7 +71,4 @@ bundle(conf);
 - [ ] Custom decoders
 - [ ] Docs
 - [ ] Tests
-- [ ] Version
 - [ ] Release
-- [ ] Publish to deno.land/x
-- [ ] Publish to nest.land
