@@ -22,7 +22,7 @@ export default {
       name: "mustaches",
       folder: "assets/mustaches/templates",
       exts: [".hbs"],
-      removeExts: true,
+      trimExtensions: true,
     },
     {
       name: "data",

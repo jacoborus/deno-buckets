@@ -18,7 +18,7 @@ export interface BucketOptions {
   trimExtensions?: boolean;
 }
 
-export type Store = Record<string, Record<string, string>>;
+export type Store = Record<string, Record<string, unknown>>;
 
 declare global {
   interface Window {
@@ -36,7 +36,8 @@ export async function bundle(options: BundleOptions) {
     "deno:///bundle.js"
   ];
   const data = JSON.stringify(store);
-  const beginning = `;window["BUCKETS_FS"]={"${options.key}":Object.freeze(${data})};\n`;
+  const beginning =
+    `;window["BUCKETS_FS"]={"${options.key}":Object.freeze(${data})};\n`;
   const finalContent = beginning + content;
   if (options.output) {
     Deno.writeTextFileSync(options.output, finalContent);
@@ -53,7 +54,7 @@ export function loadBuckets(options: BundleOptions): Store {
 
 function getStore(options: BundleOptions): Store {
   return Object.fromEntries(
-    options.buckets.map((conf) => [conf.name, getBucketData(conf)])
+    options.buckets.map((conf) => [conf.name, getBucketData(conf)]),
   );
 }
 
