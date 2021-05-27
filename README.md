@@ -103,13 +103,6 @@ await bundle(conf);
 
 ## TODO
 
-- [x] Tests
-- [x] Remove extensions
-- [x] Custom decoders
-- [x] Docs
-- [x] Logo
-- [ ] CI
-- [x] Release
 - [ ] Return nicer errors
 - [ ] Add generic constraints
 
