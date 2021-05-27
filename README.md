@@ -88,15 +88,16 @@ console.log(buckets);
 import conf from "./buckets.ts";
 import { bundle } from "https://raw.githubusercontent.com/jacoborus/deno-buckets/main/mod.ts";
 
-bundle(conf);
+await bundle(conf);
 ```
 
 ## TODO
 
+- [x] Tests
 - [x] Remove extensions
 - [x] Custom decoders
 - [ ] Docs
-- [ ] Tests
+- [ ] Logo
 - [ ] Release
 - [ ] Return nicer errors
 - [ ] Add generic constraints
