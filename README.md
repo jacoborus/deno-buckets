@@ -1,8 +1,8 @@
-<h1 align="center">deno-buckets</h1>
+<h1 align="center">Asset bundler for Deno apps</h1>
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/jacoborus/deno-buckets/main/example/deno-bucket-logo.svg" alt="deno-buckets logo"><br>
-  <b>Asset bundler for Deno apps</b><br>
+  <b>deno-buckets</b><br>
 </p>
 <p align="center">
 
@@ -55,15 +55,14 @@ export default {
   entry: "app.ts",
   buckets: [
     {
+      name: "data",
+      folder: "countries",
+    },
+    {
       name: "mustaches",
       folder: "assets/mustaches/templates",
       exts: [".template"],
       trimExtensions: true,
-    },
-    {
-      name: "data",
-      folder: "countries",
-      exts: [".txt"],
     },
   ],
   output: "app.bundle.js",
@@ -107,7 +106,7 @@ await bundle(conf);
 - [x] Remove extensions
 - [x] Custom decoders
 - [x] Docs
-- [ ] Logo
+- [x] Logo
 - [ ] CI
 - [ ] Release
 - [ ] Return nicer errors
