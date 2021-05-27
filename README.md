@@ -94,10 +94,12 @@ bundle(conf);
 ## TODO
 
 - [x] Remove extensions
-- [ ] Custom decoders
+- [x] Custom decoders
 - [ ] Docs
 - [ ] Tests
 - [ ] Release
+- [ ] Return nicer errors
+- [ ] Add generic constraints
 
 <br>
 
