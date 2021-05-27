@@ -73,7 +73,7 @@ export default {
 **app.ts:**
 
 ```typescript
-import { loadBuckets } from "https://raw.githubusercontent.com/jacoborus/deno-buckets/main/mod.ts";
+import { loadBuckets } from "https://deno.land/x/buckets@0.1.0/mod.ts";
 import bucketsConf from "./buckets.ts";
 
 const buckets = loadBuckets(bucketsConf);
@@ -96,7 +96,7 @@ console.log(buckets);
 
 ```typescript
 import conf from "./buckets.ts";
-import { bundle } from "https://raw.githubusercontent.com/jacoborus/deno-buckets/main/mod.ts";
+import { bundle } from "https://deno.land/x/buckets@0.1.0/mod.ts";
 
 await bundle(conf);
 ```
