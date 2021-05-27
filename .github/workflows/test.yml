@@ -24,6 +24,6 @@ jobs:
       - name: Format Deno Module
         run: deno fmt --check
       - name: Build Deno Module
-        run: deno run --reload mod.ts
+        run: deno run --reload --unstable mod.ts
       - name: Test Deno Module
         run: deno test --allow-none
