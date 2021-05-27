@@ -26,4 +26,4 @@ jobs:
       - name: Build Deno Module
         run: deno run --reload --unstable -A mod.ts
       - name: Test Deno Module
-        run: deno test --allow-none --unstable --allow-read --allow-write
+        run: deno test --allow-none --unstable -A
