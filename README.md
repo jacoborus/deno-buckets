@@ -1,15 +1,22 @@
-# deno-buckets 🦕🪣
+<h1 align="center">deno-buckets</h1>
 
-Asset bundler for [Deno](https://deno.land) apps
+<p align="center">
+  <b>Asset bundler for Deno apps</b></br>
+</p>
+<p align="center">
 
-[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/raw.githubusercontent.com%2Fjacoborus%2Fdeno-buckets%2Fmain%2Fmod.ts)
+<a href="https://doc.deno.land/https/raw.githubusercontent.com%2Fjacoborus%2Fdeno-buckets%2Fmain%2Fmod.ts">
+  <img src="https://doc.deno.land/badge.svg" alt="deno doc">
+</a>
 
----
+<a href="https://github.com/jacoborus/deno-buckets/blob/main/LICENSE">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/jacoborus/deno-buckets">
+</a>
 
-:fire: **HEADS UP!** This is a work in progress, it's undocumented, API may
-change and it's probably buggy. Use it at your own risk
-
----
+<a href="https://github.com/jacoborus/deno-buckets/releases">
+  <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/jacoborus/deno-buckets">
+</a>
+</p>
 
 ## Usage
 
