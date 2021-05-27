@@ -21,9 +21,10 @@
 
 ## Usage
 
-This library exports 2 methods `loadBuckets` and `bundle`. The first one exposes
-a tree with the contents of your folders and the second one bundles the app with
-all the assets. Both methods require the bundle options as unique parameter.
+This library exports 2 methods: `loadBuckets` and `bundle`. The first one
+exposes a tree with the contents of your folders and the second one bundles the
+app with all the assets. Both methods require the bundle options as unique
+parameter.
 
 **BundleOptions**:
 
@@ -108,7 +109,7 @@ await bundle(conf);
 - [x] Docs
 - [x] Logo
 - [ ] CI
-- [ ] Release
+- [x] Release
 - [ ] Return nicer errors
 - [ ] Add generic constraints
 
