@@ -35,6 +35,122 @@ Deno.test("Buckets with no options", () => {
     books: {
       "1984.txt": "It was a bright cold day in April...\n",
       "quijote.txt": "En un lugar de la Mancha...\n",
+      "nobook.notxt": "this is not a book\n",
+      "deep/otherbook.txt": "this is other book\n",
+    },
+  };
+  const contents = loadBuckets(conf);
+  assertEquals(contents, result);
+});
+
+Deno.test("filter by extension and maxDepth", () => {
+  const conf = {
+    key: "my-key",
+    entry: "entry.ts",
+    buckets: [
+      {
+        name: "books",
+        folder: "example/mybooks",
+        exts: [".txt"],
+        maxDepth: 1,
+      },
+    ],
+  };
+  const result = {
+    books: {
+      "1984.txt": "It was a bright cold day in April...\n",
+      "quijote.txt": "En un lugar de la Mancha...\n",
+    },
+  };
+  const contents = loadBuckets(conf);
+  assertEquals(contents, result);
+});
+
+Deno.test("trim extensions", () => {
+  const conf = {
+    key: "my-key",
+    entry: "entry.ts",
+    buckets: [
+      {
+        name: "books",
+        folder: "example/mybooks",
+        exts: [".txt"],
+        trimExtensions: true,
+      },
+    ],
+  };
+  const result = {
+    books: {
+      "1984": "It was a bright cold day in April...\n",
+      quijote: "En un lugar de la Mancha...\n",
+      "deep/otherbook": "this is other book\n",
+    },
+  };
+  const contents = loadBuckets(conf);
+  assertEquals(contents, result);
+});
+
+Deno.test("decoder", () => {
+  const conf = {
+    key: "my-key",
+    entry: "entry.ts",
+    buckets: [
+      {
+        name: "languages",
+        folder: "example/data/langs",
+        decoder: (data: Uint8Array): string[] => {
+          const text = new TextDecoder().decode(data);
+          return JSON.parse(text);
+        },
+      },
+    ],
+  };
+  const result = {
+    languages: {
+      "galician.json": ["vermello", "amarelo", "azul"],
+      "spanish.json": ["rojo", "amarillo", "azul"],
+    },
+  };
+  const contents = loadBuckets(conf);
+  assertEquals(contents, result);
+});
+
+Deno.test("match", () => {
+  const conf = {
+    key: "my-key",
+    entry: "entry.ts",
+    buckets: [
+      {
+        name: "languages",
+        folder: "example/data/langs",
+        match: [/lici/],
+      },
+    ],
+  };
+  const result = {
+    languages: {
+      "galician.json": '["vermello", "amarelo", "azul"]\n',
+    },
+  };
+  const contents = loadBuckets(conf);
+  assertEquals(contents, result);
+});
+
+Deno.test("skip", () => {
+  const conf = {
+    key: "my-key",
+    entry: "entry.ts",
+    buckets: [
+      {
+        name: "languages",
+        folder: "example/data/langs",
+        skip: [/lici/],
+      },
+    ],
+  };
+  const result = {
+    languages: {
+      "spanish.json": '["rojo", "amarillo", "azul"]\n',
     },
   };
   const contents = loadBuckets(conf);
