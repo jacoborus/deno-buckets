@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.97.0/testing/asserts.ts";
 
-import { loadBuckets } from "./mod.ts";
+import { loadBuckets, bundle } from "./mod.ts";
 
 Deno.test("Conf with no buckets", () => {
   const conf = {
@@ -155,4 +155,27 @@ Deno.test("skip", () => {
   };
   const contents = loadBuckets(conf);
   assertEquals(contents, result);
+});
+
+Deno.test("build", async () => {
+  const conf = {
+    key: "my-key",
+    entry: "example/app.ts",
+    buckets: [
+      {
+        name: "test",
+        folder: "example/mybooks",
+        exts: [".txt"],
+        match: [/1984/],
+        trimExtensions: true,
+      },
+    ],
+    output: "test.bundle.js",
+  };
+  await bundle(conf);
+  const result = Deno.readTextFileSync(conf.output);
+  const firstLine = result.split(";")[1];
+  const expected =
+    'window["BUCKETS_FS"]={"my-key":Object.freeze({"test":{"1984":"It was a bright cold day in April...\\n"}})}';
+  assertEquals(firstLine, expected);
 });
