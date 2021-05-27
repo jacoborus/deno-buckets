@@ -1,7 +1,8 @@
 <h1 align="center">deno-buckets</h1>
 
 <p align="center">
-  <b>Asset bundler for Deno apps</b></br>
+  <img src="https://github.com/jacoborus/deno-buckets/blob/main/example/deno-buckets-logo.svg" alt="deno-buckets logo"><br>
+  <b>Asset bundler for Deno apps</b><br>
 </p>
 <p align="center">
 
@@ -105,8 +106,9 @@ await bundle(conf);
 - [x] Tests
 - [x] Remove extensions
 - [x] Custom decoders
-- [ ] Docs
+- [x] Docs
 - [ ] Logo
+- [ ] CI
 - [ ] Release
 - [ ] Return nicer errors
 - [ ] Add generic constraints
