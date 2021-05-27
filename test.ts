@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.97.0/testing/asserts.ts";
 
-import { loadBuckets, bundle } from "./mod.ts";
+import { bundle, loadBuckets } from "./mod.ts";
 
 Deno.test("Conf with no buckets", () => {
   const conf = {

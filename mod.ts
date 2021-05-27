@@ -30,6 +30,10 @@ declare global {
 const rootPath = Deno.mainModule.replace(/[^\/]+$/, "").slice(7);
 const isCompiled = Deno.mainModule === "file://$deno$/bundle.js";
 
+/**
+ * Bundles entry point and buckets in a single file.
+ * Bundle will be send to stdout if options.output is missing
+ */
 export async function bundle(options: BundleOptions) {
   const store = getStore(options);
   const entryPath = resolve(rootPath, options.entry);
@@ -47,12 +51,19 @@ export async function bundle(options: BundleOptions) {
   }
 }
 
+/** Synchronously loads the content of the buckets */
 export function loadBuckets(options: BundleOptions): Store {
   return !isCompiled && !window.BUCKETS_FS?.[options.key]
     ? Object.freeze(getStore(options))
     : window.BUCKETS_FS[options.key];
 }
 
+/**
+ *
+ *
+ * @param {BundleOptions} options
+ * @returns  {Store}
+ */
 function getStore(options: BundleOptions): Store {
   return Object.fromEntries(
     options.buckets.map((conf) => [conf.name, getBucketData(conf)]),
