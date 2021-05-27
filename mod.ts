@@ -9,19 +9,9 @@ export interface BundleOptions {
 }
 
 export interface BucketOptions {
-  /**
-   * bucket identifier
-   *
-   * @type {string}
-   * @memberof BucketOptions
-   */
+  /** bucket identifier */
   name: string;
-  /**
-   * folder to get the files from. Relative to entry point folder
-   *
-   * @type {string}
-   * @memberof BucketOptions
-   */
+  /** folder to get the files from. Relative to entry point folder */
   folder: string;
   maxDepth?: number;
   exts?: string[];
