@@ -1,7 +1,7 @@
 <h1 align="center">deno-buckets</h1>
 
 <p align="center">
-  <img src="https://github.com/jacoborus/deno-buckets/blob/main/example/deno-buckets-logo.svg" alt="deno-buckets logo"><br>
+  <img src="https://raw.githubusercontent.com/jacoborus/deno-buckets/main/example/deno-bucket-logo.svg" alt="deno-buckets logo"><br>
   <b>Asset bundler for Deno apps</b><br>
 </p>
 <p align="center">
