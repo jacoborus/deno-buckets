@@ -32,7 +32,7 @@ const isCompiled = Deno.mainModule === "file://$deno$/bundle.js";
 
 /**
  * Bundles entry point and buckets in a single file.
- * Bundle will be send to stdout if options.output is missing
+ * Bundle will be sent to stdout if options.output is missing
  */
 export async function bundle(options: BundleOptions) {
   const store = getStore(options);

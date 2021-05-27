@@ -2,8 +2,7 @@
 
 Asset bundler for [Deno](https://deno.land) apps
 
-
-[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https://raw.githubusercontent.com/jacoborus/deno-buckets/main/mod.ts)
+[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/raw.githubusercontent.com%2Fjacoborus%2Fdeno-buckets%2Fmain%2Fmod.ts)
 
 ---
 
