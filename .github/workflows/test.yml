@@ -23,6 +23,8 @@ jobs:
           deno-version: ${{ matrix.deno-version }}
       - name: Format Deno Module
         run: deno fmt --check
+      - name: Deno Lint module
+        run: deno lint --ignore=test.bundle.js
       - name: Build Deno Module
         run: deno run --reload --unstable -A mod.ts
       - name: Test Deno Module
