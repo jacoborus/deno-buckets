@@ -2,10 +2,13 @@ import { assertEquals } from "https://deno.land/std@0.97.0/testing/asserts.ts";
 
 import { bundle, loadBuckets } from "./mod.ts";
 
+const optionsUrl = import.meta.url;
+
 Deno.test("Conf with no buckets", () => {
   const conf = {
     key: "my-key",
     entry: "entry.ts",
+    optionsUrl,
     buckets: [],
   };
   const contents = loadBuckets(conf);
@@ -26,6 +29,7 @@ Deno.test("Buckets with no options", () => {
         folder: "example/data/langs",
       },
     ],
+    optionsUrl,
   };
   const result = {
     languages: {
@@ -55,6 +59,7 @@ Deno.test("filter by extension and maxDepth", () => {
         maxDepth: 1,
       },
     ],
+    optionsUrl,
   };
   const result = {
     books: {
@@ -78,6 +83,7 @@ Deno.test("trim extensions", () => {
         trimExtensions: true,
       },
     ],
+    optionsUrl,
   };
   const result = {
     books: {
@@ -104,6 +110,7 @@ Deno.test("decoder", () => {
         },
       },
     ],
+    optionsUrl,
   };
   const result = {
     languages: {
@@ -126,6 +133,7 @@ Deno.test("match", () => {
         match: [/lici/],
       },
     ],
+    optionsUrl,
   };
   const result = {
     languages: {
@@ -147,6 +155,7 @@ Deno.test("skip", () => {
         skip: [/lici/],
       },
     ],
+    optionsUrl,
   };
   const result = {
     languages: {
@@ -170,6 +179,7 @@ Deno.test("build", async () => {
         trimExtensions: true,
       },
     ],
+    optionsUrl,
     output: "test.bundle.js",
   };
   await bundle(conf);

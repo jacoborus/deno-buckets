@@ -6,6 +6,7 @@ interface StoreState {
 export default {
   key: "my-key",
   entry: "app.ts",
+  optionsUrl: import.meta.url,
   buckets: [
     {
       name: "books",

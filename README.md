@@ -29,19 +29,21 @@ parameter.
 **BundleOptions**:
 
 - **key** _string_: this avoids stores clashing
-- **entry** _string_: it should be in the same folder as your bundler file
+- **optionsUrl** _string_: `import.meta.url`
+- **entry** _string_: relative to config folder
 - **output** _string_: if you omit this, the bundle will be sent to stdout
 - **buckets** _BucketOptions[]_: a list of bucket configurations. See below
 
 **BucketOptions**:
 
 - **name** _string_: for future reference
-- **folder** _string_: relative to the entry point of your app
+- **folder** _string_: relative to config folder
 - **maxDepth?** _number_: by default, there's no limit
 - **exts?**: _string[]_: a list of extensions to filter in.
 - **match?**: _RegExp[]_: a list of regexes to filter in
 - **skip?**: _RegExp[]_: a list of regexes to filter out
-- **trimExtensions?** _boolean_: remove the extension from the file name
+- **trimExtensions?** _boolean_: remove the extension from the file name.
+  Requires option `exts`
 - **decoder?** _fuction_: it uses TextDecoder by default
 
 Arguments marked with a question mark (?) are optional
@@ -53,6 +55,7 @@ Arguments marked with a question mark (?) are optional
 ```typescript
 export default {
   key: "my-key",
+  optionsUrl: import.meta.url,
   entry: "app.ts",
   buckets: [
     {
@@ -103,6 +106,7 @@ await bundle(conf);
 
 ## TODO
 
+- [ ] Allow to create buckets from handpicked paths
 - [ ] Return nicer errors
 - [ ] Add generic constraints
 
