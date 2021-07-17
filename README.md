@@ -19,6 +19,13 @@
 </a>
 </p>
 
+Buckets is a wrapper around the native
+[Deno bundler](https://deno.land/manual/tools/bundler), it allows to:
+
+- access readonly buckets with no `js/ts` files from your scripts
+- bundle those assets with the scripts into a single `.js` file to compile with
+  [Deno](https://deno.land)
+
 ## Usage
 
 This library exports 2 methods: `loadBuckets` and `bundle`. The first one
@@ -103,12 +110,6 @@ import { bundle } from "https://deno.land/x/buckets@0.1.0/mod.ts";
 
 await bundle(conf);
 ```
-
-## TODO
-
-- [ ] Allow to create buckets from handpicked paths
-- [ ] Return nicer errors
-- [ ] Add generic constraints
 
 <br>
 
