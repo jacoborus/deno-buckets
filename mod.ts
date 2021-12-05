@@ -1,29 +1,21 @@
-export async function bundle(entry: string, outputPath?: string) {
-  const { files } = await Deno.emit(entry);
-  const sourcePaths = Object.keys(files).filter((path) =>
-    !path.endsWith(".map")
+export async function bundle(entry: string, output?: string) {
+  const { files } = await Deno.emit(entry, { check: false });
+  const paths = Object.keys(files).filter((path) => !path.endsWith(".map"));
+
+  const proms = paths.map((path) =>
+    new Promise((resolve) => getContent(path, files[path]).then(resolve))
   );
 
-  const proms = sourcePaths.map((path) => {
-    return new Promise((resolve) => {
-      getContent(path, files[path]).then(resolve);
-    });
-  });
+  const presources = await Promise.all(proms) as [string, string][];
+  const sources = Object.fromEntries(presources);
 
-  const presources = await Promise.all(proms);
-  const sources = Object.fromEntries(
-    presources as unknown as [string, string][],
-  );
-
-  const bundles = await Deno.emit(entry, {
+  const content = (await Deno.emit(entry, {
     sources,
     bundle: "module",
-  });
+  })).files["deno:///bundle.js"];
 
-  const content = bundles.files["deno:///bundle.js"];
-
-  if (outputPath) Deno.writeTextFileSync(outputPath, content);
-  else await Deno.stdout.write(new TextEncoder().encode(content));
+  if (output) Deno.writeTextFileSync(output, content);
+  return content;
 }
 
 async function getContent(
