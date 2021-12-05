@@ -1,44 +1,52 @@
 export async function bundle(entry: string, outputPath?: string) {
   const { files } = await Deno.emit(entry);
-  const filenames = Object.keys(files)
-    .map((filename) => [filename, getPath(filename)])
-    .filter(([_, path]) => path);
-  const proms = filenames.map(([prepath, path]) => {
+  const sourcePaths = Object.keys(files).filter((path) =>
+    !path.endsWith(".map")
+  );
+
+  const proms = sourcePaths.map((path) => {
     return new Promise((resolve) => {
-      getContent(path, files[prepath])
-        .then((content) => resolve([path, content]));
+      getContent(path, files[path]).then(resolve);
     });
   });
+
   const presources = await Promise.all(proms);
   const sources = Object.fromEntries(
     presources as unknown as [string, string][],
   );
+
   const bundles = await Deno.emit(entry, {
     sources,
     bundle: "module",
   });
+
   const content = bundles.files["deno:///bundle.js"];
+
   if (outputPath) Deno.writeTextFileSync(outputPath, content);
   else await Deno.stdout.write(new TextEncoder().encode(content));
 }
 
-function getPath(filePath: string): string {
-  if (filePath.endsWith(".map")) return "";
+async function getContent(
+  path: string,
+  str: string,
+): Promise<[string, string]> {
+  const isLocal = path.startsWith("file://");
+  const finalPath = getPath(path, isLocal);
+  if (!isLocal) return [finalPath, str];
+  const file = Deno.readTextFileSync(finalPath);
+  if (!file.includes("is-deno-bucket")) return [finalPath, file];
+  const content = await getSource(finalPath);
+  return [finalPath, content];
+}
+
+function getPath(filePath: string, isLocal: boolean): string {
   const name = (filePath.endsWith(".ts.js"))
     ? filePath.slice(0, filePath.length - 3)
     : filePath;
-  const finalName = name.startsWith("file:///") ? name.slice(7) : name;
-  return finalName;
+  return isLocal ? name.slice(7) : name;
 }
 
 async function getSource(path: string): Promise<string> {
   const data = await import(path);
   return `export default ${JSON.stringify(data.default)}`;
-}
-
-async function getContent(path: string, str: string): Promise<string> {
-  if (!path.startsWith("/")) return str;
-  const file = Deno.readTextFileSync(path);
-  if (!file.includes("is-deno-bucket")) return str;
-  return await getSource(path);
 }
