@@ -1,4 +1,4 @@
-export async function bundle(entry: string) {
+export async function bundle(entry: string, outputPath?: string) {
   const { files } = await Deno.emit(entry);
   const filenames = Object.keys(files)
     .map((filename) => [filename, getPath(filename)])
@@ -17,7 +17,9 @@ export async function bundle(entry: string) {
     sources,
     bundle: "module",
   });
-  Deno.writeTextFileSync("bundle.js", bundles.files["deno:///bundle.js"]);
+  const content = bundles.files["deno:///bundle.js"];
+  if (outputPath) Deno.writeTextFileSync(outputPath, content);
+  else await Deno.stdout.write(new TextEncoder().encode(content));
 }
 
 function getPath(filePath: string): string {
