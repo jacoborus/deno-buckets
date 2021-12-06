@@ -26,7 +26,7 @@ async function getContent(
   const finalPath = getPath(path, isLocal);
   if (!isLocal) return [finalPath, str];
   const file = Deno.readTextFileSync(finalPath);
-  if (!file.includes("is-deno-bucket")) return [finalPath, file];
+  if (!isBucket(file)) return [finalPath, file];
   const content = await getSource(finalPath);
   return [finalPath, content];
 }
@@ -41,4 +41,10 @@ function getPath(filePath: string, isLocal: boolean): string {
 async function getSource(path: string): Promise<string> {
   const data = await import(path);
   return `export default ${JSON.stringify(data.default)}`;
+}
+
+function isBucket(source: string): boolean {
+  const index = source.indexOf("/n");
+  const str = source.slice(0, index);
+  return str.includes("is-deno-bucket");
 }
