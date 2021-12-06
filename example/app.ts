@@ -1,2 +1,2 @@
 import data from "./data.ts";
-console.log(data);
+export default data;

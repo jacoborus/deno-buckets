@@ -38,7 +38,8 @@ source files, and then bundle their resolved default exports.
 
 ```typescript
 // is-deno-bucket
-const rawData = Deno.readTextFileSync("numbers.json");
+const __dirname = new URL(".", import.meta.url).pathname;
+const rawData = Deno.readTextFileSync(__dirname + "mydata.json");
 export default JSON.parse(rawData);
 ```
 
@@ -46,32 +47,31 @@ export default JSON.parse(rawData);
 
 ```typescript
 import data from "./data.ts";
-console.log(data);
+export default data;
 ```
 
-Then run: `deno-buckets app.ts app.bundle.js` and you'll get:
-
-**app.bundle.ts:**
+Then run: `deno-buckets app.ts` and you'll get `app.bundle.js`:
 
 ```typescript
 const __default = {
   "one": 1,
   "two": 2,
 };
-console.log(__default);
+export { __default as default };
 ```
 
 ## Usage
 
 Add the comment `// is-deno-bucket` at the beginning of the files you want to
-resolve before bundling. Then, bundle your app with **deno-buckets**.
+resolve before bundling. Only the `default` export will be prebundled. Then,
+bundle your app with **deno-buckets**.
 
 ### CLI
 
 Install with: `deno`
 
 ```sh
-deno install --allow-net --allow-read https://deno.land/x/buckets/deno-buckets.ts
+deno install --unstable --allow-net --allow-read --allow-write https://deno.land/x/buckets/deno-buckets.ts
 ```
 
 Then run:
@@ -83,7 +83,7 @@ deno-buckets app.ts app.bundle.js
 ### API
 
 ```typescript
-import bundler from "https://deno.land/x/buckets/bundler.ts";
+import bundler from "https://deno.land/x/buckets/mod.ts";
 const bundle = bundler("./app.ts");
 Deno.writeTextFileSync("app.bundle.js", bundle);
 ```
