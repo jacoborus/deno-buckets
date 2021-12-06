@@ -20,11 +20,13 @@
 </p>
 
 Buckets is a wrapper around the native
-[Deno bundler](https://deno.land/manual/tools/bundler), it allows you to select source files, and then bundle their resolved exports
+[Deno bundler](https://deno.land/manual/tools/bundler), it allows you to select
+source files, and then bundle their resolved default exports.
 
 ## Example
 
 **numbers.json:**
+
 ```json
 {
   "one": 1,
@@ -36,15 +38,15 @@ Buckets is a wrapper around the native
 
 ```typescript
 // is-deno-bucket
-const rawData = Deno.readTextFileSync("numbers.json")
-export default JSON.parse(rawData)
+const rawData = Deno.readTextFileSync("numbers.json");
+export default JSON.parse(rawData);
 ```
 
 **app.ts:**
 
 ```typescript
 import data from "./data.ts";
-console.log(data)
+console.log(data);
 ```
 
 Then run: `deno-buckets app.ts app.bundle.js` and you'll get:
@@ -53,22 +55,20 @@ Then run: `deno-buckets app.ts app.bundle.js` and you'll get:
 
 ```typescript
 const __default = {
-    "one": 1,
-    "two": 2
+  "one": 1,
+  "two": 2,
 };
 console.log(__default);
 ```
 
-
 ## Usage
 
-Add the comment `// is-deno-bucket` at the beginning of the files you want to resolve before bundling.
-Then, bundle your app with **deno-buckets**.
-
+Add the comment `// is-deno-bucket` at the beginning of the files you want to
+resolve before bundling. Then, bundle your app with **deno-buckets**.
 
 ### CLI
 
-Install with: `deno `
+Install with: `deno`
 
 ```sh
 deno install --allow-net --allow-read https://deno.land/x/buckets/deno-buckets.ts
@@ -80,15 +80,13 @@ Then run:
 deno-buckets app.ts app.bundle.js
 ```
 
-
 ### API
 
 ```typescript
-import bundler from "https://deno.land/x/buckets/bundler.ts"
-const bundle = bundler("./app.ts")
-Deno.writeTextFileSync("app.bundle.js", bundle)
+import bundler from "https://deno.land/x/buckets/bundler.ts";
+const bundle = bundler("./app.ts");
+Deno.writeTextFileSync("app.bundle.js", bundle);
 ```
-
 
 <br>
 
