@@ -68,22 +68,23 @@ bundle your app with **deno-buckets**.
 
 ### CLI
 
-Install with: `deno`
+Install:
 
 ```sh
 deno install --unstable --allow-net --allow-read --allow-write https://deno.land/x/buckets/deno-buckets.ts
 ```
 
-Then run:
+Run:
 
 ```sh
-deno-buckets app.ts app.bundle.js
+deno-buckets <entry_path> [destination_path]
 ```
 
 ### API
 
 ```typescript
 import bundler from "https://deno.land/x/buckets/mod.ts";
+
 const bundle = bundler("./app.ts");
 Deno.writeTextFileSync("app.bundle.js", bundle);
 ```
