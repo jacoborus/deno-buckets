@@ -1,3 +1,4 @@
 import { bundle } from "../mod.ts";
 
-bundle("./app.ts");
+const content = bundle("./app.ts");
+console.log(content);
