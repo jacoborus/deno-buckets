@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        deno-version: [1.10.2]
+        deno-version: [1.16.4]
 
     steps:
       - name: Git Checkout Deno Module
@@ -28,4 +28,4 @@ jobs:
       - name: Build Deno Module
         run: deno run --reload --unstable -A mod.ts
       - name: Test Deno Module
-        run: deno test --allow-none --unstable -A
+        run: deno test --unstable -A

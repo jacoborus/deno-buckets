@@ -20,95 +20,73 @@
 </p>
 
 Buckets is a wrapper around the native
-[Deno bundler](https://deno.land/manual/tools/bundler), it allows to:
-
-- access readonly buckets with no `js/ts` files from your scripts
-- bundle those assets with the scripts into a single `.js` file to compile with
-  [Deno](https://deno.land)
-
-## Usage
-
-This library exports 2 methods: `loadBuckets` and `bundle`. The first one
-exposes a tree with the contents of your folders and the second one bundles the
-app with all the assets. Both methods require the bundle options as unique
-parameter.
-
-**BundleOptions**:
-
-- **key** _string_: this avoids stores clashing
-- **optionsUrl** _string_: `import.meta.url`
-- **entry** _string_: relative to config folder
-- **output** _string_: if you omit this, the bundle will be sent to stdout
-- **buckets** _BucketOptions[]_: a list of bucket configurations. See below
-
-**BucketOptions**:
-
-- **name** _string_: for future reference
-- **folder** _string_: relative to config folder
-- **maxDepth?** _number_: by default, there's no limit
-- **exts?**: _string[]_: a list of extensions to filter in.
-- **match?**: _RegExp[]_: a list of regexes to filter in
-- **skip?**: _RegExp[]_: a list of regexes to filter out
-- **trimExtensions?** _boolean_: remove the extension from the file name.
-  Requires option `exts`
-- **decoder?** _fuction_: it uses TextDecoder by default
-
-Arguments marked with a question mark (?) are optional
+[Deno bundler](https://deno.land/manual/tools/bundler), it allows you to select
+source files, and then bundle their resolved default exports.
 
 ## Example
 
-**buckets.ts:**
+**numbers.json:**
+
+```json
+{
+  "one": 1,
+  "two": 2
+}
+```
+
+**data.ts:**
 
 ```typescript
-export default {
-  key: "my-key",
-  optionsUrl: import.meta.url,
-  entry: "app.ts",
-  buckets: [
-    {
-      name: "data",
-      folder: "countries",
-    },
-    {
-      name: "mustaches",
-      folder: "assets/mustaches/templates",
-      exts: [".template"],
-      trimExtensions: true,
-    },
-  ],
-  output: "app.bundle.js",
-};
+// is-deno-bucket
+const __dirname = new URL(".", import.meta.url).pathname;
+const rawData = Deno.readTextFileSync(__dirname + "mydata.json");
+export default JSON.parse(rawData);
 ```
 
 **app.ts:**
 
 ```typescript
-import { loadBuckets } from "https://deno.land/x/buckets@0.1.0/mod.ts";
-import bucketsConf from "./buckets.ts";
-
-const buckets = loadBuckets(bucketsConf);
-console.log(buckets);
-// {
-//   mustaches: {
-//     "country-info": ".....",
-//     "other-info": ".....",
-//     ...
-//   },
-//   data: {
-//     "capitals.txt": ".....",
-//     "population.txt": ".....",
-//     ...
-//   }
-// }
+import data from "./data.ts";
+export default data;
 ```
 
-**bundler.ts:**
+Then run: `deno-buckets app.ts` and you'll get `app.bundle.js`:
 
 ```typescript
-import conf from "./buckets.ts";
-import { bundle } from "https://deno.land/x/buckets@0.1.0/mod.ts";
+const __default = {
+  "one": 1,
+  "two": 2,
+};
+export { __default as default };
+```
 
-await bundle(conf);
+## Usage
+
+Add the comment `// is-deno-bucket` at the beginning of the files you want to
+resolve before bundling. Only the `default` export will be prebundled. Then,
+bundle your app with **deno-buckets**.
+
+### CLI
+
+Install:
+
+```sh
+deno install --unstable --allow-net --allow-read --allow-write https://deno.land/x/buckets/deno-buckets.ts
+```
+
+Run:
+
+```sh
+deno-buckets <entry_path> [destination_path]
+```
+
+### API
+
+```typescript
+import bundler from "https://deno.land/x/buckets/mod.ts";
+
+const bundle = bundler("./app.ts");
+Deno.writeTextFileSync("app.bundle.js", bundle);
 ```
 
 <br>
