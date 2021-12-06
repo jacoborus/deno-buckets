@@ -1,4 +1,4 @@
-export async function bundle(entry: string, output?: string) {
+export async function bundle(entry: string) {
   const { files } = await Deno.emit(entry, { check: false });
   const paths = Object.keys(files).filter((path) => !path.endsWith(".map"));
 
@@ -14,7 +14,6 @@ export async function bundle(entry: string, output?: string) {
     bundle: "module",
   })).files["deno:///bundle.js"];
 
-  if (output) Deno.writeTextFileSync(output, content);
   return content;
 }
 
