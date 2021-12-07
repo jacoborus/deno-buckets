@@ -83,10 +83,10 @@ deno-buckets <entry_path> [destination_path]
 ### API
 
 ```typescript
-import bundler from "https://deno.land/x/buckets/mod.ts";
+import { bundle } from "https://deno.land/x/buckets/mod.ts";
 
-const bundle = bundler("./app.ts");
-Deno.writeTextFileSync("app.bundle.js", bundle);
+const content = await bundle("./app.ts");
+Deno.writeTextFileSync("app.bundle.js", content);
 ```
 
 <br>
