@@ -26,20 +26,23 @@ async function getContent(
   if (!isLocal) return [finalPath, str];
   const file = Deno.readTextFileSync(finalPath);
   if (!isBucket(file)) return [finalPath, file];
-  const content = await getSource(finalPath);
+  const content = await getSource(path);
   return [finalPath, content];
 }
 
 function getPath(filePath: string, isLocal: boolean): string {
-  const name = (filePath.endsWith(".ts.js"))
-    ? filePath.slice(0, filePath.length - 3)
-    : filePath;
+  const name = trimExtension(filePath);
   return isLocal ? name.slice(7) : name;
 }
 
 async function getSource(path: string): Promise<string> {
-  const data = await import(path);
+  const name = trimExtension(path);
+  const data = await import(name);
   return `export default ${JSON.stringify(data.default)}`;
+}
+
+function trimExtension(path: string): string {
+  return path.endsWith(".ts.js") ? path.slice(0, path.length - 3) : path;
 }
 
 function isBucket(source: string): boolean {
