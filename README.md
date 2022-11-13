@@ -61,7 +61,7 @@ deno install --allow-net --allow-read --allow-write --allow-env https://deno.lan
 Run:
 
 ```sh
-buckets <entry_path> > my-bundle.js
+buckets <entry_path> [out_file]
 ```
 
 ### API
