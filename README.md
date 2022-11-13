@@ -4,80 +4,64 @@
   <img src="https://raw.githubusercontent.com/jacoborus/deno-buckets/main/example/deno-bucket-logo.svg" alt="deno-buckets logo"><br>
   <b>deno-buckets</b><br>
 </p>
-<p align="center">
 
+<p align="center">
 <a href="https://doc.deno.land/https/raw.githubusercontent.com%2Fjacoborus%2Fdeno-buckets%2Fmain%2Fmod.ts">
   <img src="https://doc.deno.land/badge.svg" alt="deno doc">
 </a>
-
 <a href="https://github.com/jacoborus/deno-buckets/blob/main/LICENSE">
   <img alt="GitHub License" src="https://img.shields.io/github/license/jacoborus/deno-buckets">
 </a>
-
 <a href="https://github.com/jacoborus/deno-buckets/releases">
   <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/jacoborus/deno-buckets">
 </a>
 </p>
 
 Buckets is a wrapper around the native
-[Deno bundler](https://deno.land/manual/tools/bundler), it allows you to select
+[Deno emit](https://github.com/denoland/deno_emit), it allows you to select
 source files, and then bundle their resolved default exports.
 
 ## Example
-
-**numbers.json:**
-
-```json
-{
-  "one": 1,
-  "two": 2
-}
-```
 
 **data.ts:**
 
 ```typescript
 // is-deno-bucket
-const __dirname = new URL(".", import.meta.url).pathname;
-const rawData = Deno.readTextFileSync(__dirname + "mydata.json");
-export default JSON.parse(rawData);
+export default Deno.readTextFileSync("./lorem.txt");
 ```
 
 **app.ts:**
 
 ```typescript
 import data from "./data.ts";
-export default data;
+console.log(data)
 ```
 
-Then run: `deno-buckets app.ts` and you'll get `app.bundle.js`:
+Then run: `buckets app.ts > app.bundle.js`:
 
 ```typescript
-const __default = {
-  "one": 1,
-  "two": 2,
-};
-export { __default as default };
+// app.bundle.js
+const __default = 'Lorem ipsum dolor sit amet\n';
+console.log(__default)
 ```
 
 ## Usage
 
 Add the comment `// is-deno-bucket` at the beginning of the files you want to
-resolve before bundling. Only the `default` export will be prebundled. Then,
-bundle your app with **deno-buckets**.
+resolve before bundling. Then, bundle your app with **deno-buckets**. Only the `default` export will be resolved.
 
 ### CLI
 
 Install:
 
 ```sh
-deno install --unstable --allow-net --allow-read --allow-write https://deno.land/x/buckets/deno-buckets.ts
+deno install --allow-net --allow-read --allow-write --allow-env https://deno.land/x/buckets/buckets.ts
 ```
 
 Run:
 
 ```sh
-deno-buckets <entry_path> [destination_path]
+buckets <entry_path> > my-bundle.js
 ```
 
 ### API
