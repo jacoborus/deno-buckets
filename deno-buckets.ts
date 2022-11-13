@@ -1,4 +1,4 @@
-import { basename, extname } from "https://deno.land/std@0.117.0/path/mod.ts";
+import { basename } from "https://deno.land/std@0.117.0/path/mod.ts";
 import { bundle } from "./mod.ts";
 
 const helpText = `USAGE:
@@ -14,11 +14,10 @@ if (!target) {
 
 let finalDest = destination;
 if (!finalDest) {
-  const extLength = extname(target).length;
   const name = basename(target);
-  const prename = name.slice(0, name.length - extLength);
+  const prename = name.slice(0, name.length - 3);
   finalDest = prename + ".bundle.js";
 }
 
 const content = await bundle(target);
-Deno.writeTextFileSync(finalDest, content);
+await Deno.stdout.write(new TextEncoder().encode(content));
