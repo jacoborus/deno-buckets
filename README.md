@@ -68,6 +68,12 @@ buckets <entry_path> [import_map_path] > out.js
 Buckets will look for `deno.json` or `deno.jsonc` in the current folder. To use a different
 imports map, pass it's path as the second argument
 
+Alternatively, you can use it directly from the deno.land/x source:
+
+```sh
+deno run --allow-read --allow-write --allow-net --allow-env https://deno.land/x/buckets@v0.7.0/buckets.ts your_entry_file.ts > bundle.js
+```
+
 ### API
 
 ```typescript
