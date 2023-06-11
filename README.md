@@ -34,21 +34,22 @@ export default Deno.readTextFileSync("./lorem.txt");
 
 ```typescript
 import data from "./data.ts";
-console.log(data)
+console.log(data);
 ```
 
 Then run: `buckets app.ts > app.bundle.js`:
 
 ```typescript
 // app.bundle.js
-const __default = 'Lorem ipsum dolor sit amet\n';
-console.log(__default)
+const __default = "Lorem ipsum dolor sit amet\n";
+console.log(__default);
 ```
 
 ## Usage
 
 Add the comment `// is-deno-bucket` at the beginning of the files you want to
-resolve before bundling. Then, bundle your app with **deno-buckets**. Only the `default` export will be resolved.
+resolve before bundling. Then, bundle your app with **deno-buckets**. Only the
+`default` export will be resolved.
 
 ### CLI
 
