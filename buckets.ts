@@ -1,9 +1,9 @@
 import { bundle } from "./mod.ts";
 
 const helpText = `USAGE:
-    buckets <source_file> [out_file]`;
+    buckets <source_file> [import_map_path] > out.js`;
 
-const [target, destination] = Deno.args;
+const [target, importMap] = Deno.args;
 
 if (!target) {
   console.log("Error: missing <source_file> param\n\n");
@@ -11,7 +11,6 @@ if (!target) {
   Deno.exit(1);
 }
 
-const content = await bundle(target);
+const content = await bundle(target, importMap);
 
-if (destination) Deno.writeTextFileSync(destination, content);
-else await Deno.stdout.write(new TextEncoder().encode(content));
+await Deno.stdout.write(new TextEncoder().encode(content));

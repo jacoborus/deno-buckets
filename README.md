@@ -62,15 +62,18 @@ deno install --allow-net --allow-read --allow-write --allow-env https://deno.lan
 Run:
 
 ```sh
-buckets <entry_path> [out_file]
+buckets <entry_path> [import_map_path] > out.js
 ```
+
+Buckets will look for `deno.json` or `deno.jsonc` in the current folder. To use a different
+imports map, pass it's path as the second argument
 
 ### API
 
 ```typescript
 import { bundle } from "https://deno.land/x/buckets/mod.ts";
 
-const content = await bundle("./app.ts");
+const content = await bundle("./app.ts", "deno.json");
 Deno.writeTextFileSync("app.bundle.js", content);
 ```
 

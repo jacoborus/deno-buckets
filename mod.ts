@@ -2,9 +2,17 @@ import {
   bundle as denoBundle,
   transpile,
 } from "https://deno.land/x/emit@0.24.0/mod.ts";
+import { resolve } from "https://deno.land/std@0.191.0/path/mod.ts";
 
-export async function bundle(entry: string): Promise<string> {
-  const files = await transpile(entry);
+export async function bundle(
+  entry: string,
+  importMap?: string,
+): Promise<string> {
+  const imap = getImportMap(importMap);
+
+  const files = await transpile(entry, {
+    importMap: imap,
+  });
 
   await Promise.all(
     Object.keys(files).map(async (path) => {
@@ -25,6 +33,7 @@ export async function bundle(entry: string): Promise<string> {
         content: files.get(url) as string,
       });
     },
+    importMap: imap,
   });
 
   const code = fileContent.code;
@@ -42,7 +51,18 @@ async function getSource(path: string): Promise<string> {
   return `export default ${JSON.stringify(data.default)}`;
 }
 
-export function existsSync(path: string): boolean {
+function getImportMap(path?: string) {
+  if (!path) {
+    const json = resolve("deno.json");
+    if (existsSync(json)) return JSON.parse(Deno.readTextFileSync(json));
+    const jsonc = resolve("deno.jsonc");
+    if (existsSync(jsonc)) return JSON.parse(Deno.readTextFileSync(jsonc));
+    return;
+  }
+  return JSON.parse(Deno.readTextFileSync(resolve(path)));
+}
+
+function existsSync(path: string): boolean {
   try {
     Deno.statSync(path);
   } catch (e) {
