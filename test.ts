@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.163.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.191.0/testing/asserts.ts";
 import { bundle } from "./mod.ts";
 
 Deno.test("build", async () => {
